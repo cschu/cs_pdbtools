@@ -148,7 +148,11 @@ def reorder_atoms(resdata, start_index, order=ORDER_BY_NA_BACKBONE_IGNORE_BASE):
 
 def main(argv):
     
-    fn = open(argv[0])
+    # Testing @ home    
+    # fn = open("c:\\users\\chris\\workspace\\cs_pdbtools\\testcases\\sixhairpin.pdb") 
+    # fn = open("c:\\users\\chris\\workspace\\cs_pdbtools\\testcases\\2qba.pdb")
+    fn = open(argv[0])    
+    
     current_residue = None
     residue_data = []
     current_atom_index = 1
@@ -168,9 +172,15 @@ def main(argv):
                 residue_data = [atom]
                 
         else:
+            # This case occurs when CONECT lines follow the coordinate section.            
             if residue_data:
                 reorder_atoms(residue_data, current_atom_index)
+                residue_data = []                
             sys.stdout.write('%s\n' % line.strip())
+    
+    # Without CONECT lines, this is needed to write the last residue.
+    if residue_data:
+                reorder_atoms(residue_data, current_atom_index)
     
     
     pass
